@@ -7,7 +7,15 @@ const Button = (props) => (
 )
 
 const Display = (props) => (
-    <div>{props.name} {props.value}</div>
+    <div>{props.name} {props.value} {props.symbol}</div>
+)
+
+const Statistics = (props) => (
+    <>
+        <Display name="all" value={props.good + props.neutral + props.bad}/>
+        <Display name="average" value={(props.good - props.bad) / (props.good + props.neutral + props.bad)}/>
+        <Display name="positive" value={props.good / (props.good + props.neutral + props.bad)} symbol="%"/>
+    </>
 )
 
 const App = () => {
@@ -39,9 +47,7 @@ const App = () => {
             <Display name="good" value={good}/>
             <Display name="neutral" value={neutral}/>
             <Display name="bad" value={bad}/>
-            <div>all {good + neutral + bad}</div>
-            <div>average {(good - bad) / (good + neutral + bad)}</div>
-            <div>positive {good / (good + neutral + bad)} %</div>
+            <Statistics good={good} neutral={neutral} bad={bad}/>
         </>
     )
 }
