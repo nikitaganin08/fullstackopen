@@ -10,13 +10,20 @@ const Display = (props) => (
     <div>{props.name} {props.value} {props.symbol}</div>
 )
 
-const Statistics = (props) => (
-    <>
-        <Display name="all" value={props.good + props.neutral + props.bad}/>
-        <Display name="average" value={(props.good - props.bad) / (props.good + props.neutral + props.bad)}/>
-        <Display name="positive" value={props.good / (props.good + props.neutral + props.bad)} symbol="%"/>
-    </>
-)
+const Statistics = (props) => {
+    if (props.good === 0 && props.neutral === 0 && props.bad === 0) {
+        return (
+            <div>No feedback given</div>
+        )
+    }
+    return (
+        <>
+            <Display name="all" value={props.good + props.neutral + props.bad}/>
+            <Display name="average" value={(props.good - props.bad) / (props.good + props.neutral + props.bad)}/>
+            <Display name="positive" value={props.good * 100 / (props.good + props.neutral + props.bad)} symbol="%"/>
+        </>
+    )
+}
 
 const App = () => {
     // save clicks of each button to its own state
