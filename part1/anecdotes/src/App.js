@@ -30,12 +30,19 @@ const App = () => {
         return setPoint(copyPoints)
     }
 
+    const arrayMaxIndex = () => {
+        return points.indexOf(Math.max(...points))
+    }
+
     return (
         <>
+            <h1>Anecdote of the day</h1>
             <div>{anecdotes[selected]}</div>
             <div>has {points[selected].valueOf()} votes</div>
             <Button handleClick={handleAddPoint} text="vote"/>
             <Button handleClick={handleSetSelected} text="next anecdote"/>
+            <h1>Anecdote with most votes</h1>
+            <div>{anecdotes[arrayMaxIndex()]}</div>
         </>
     )
 }
