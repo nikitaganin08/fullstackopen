@@ -1,19 +1,25 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Persons from "./components/Persons"
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import axios from "axios";
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        {name: 'Arto Hellas', phone: '040-123456'},
-        {name: 'Ada Lovelace', phone: '39-44-5323523'},
-        {name: 'Dan Abramov', phone: '12-43-234345'},
-        {name: 'Mary Poppendieck', phone: '39-23-6423122'}
-    ])
 
+    const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
-    const [newPhone, setNewPhone] = useState('')
+    const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
+
+    useEffect(() => {
+        console.log("effect")
+        axios.get('http://localhost:3001/persons')
+            .then(response => {
+                console.log("promise fulfilled")
+                setPersons(response.data)
+            })
+    }, [])
+    console.log('render', persons.length, "persons")
 
     const addPerson = (event) => {
         event.preventDefault()
@@ -22,12 +28,12 @@ const App = () => {
         } else {
             const personObject = {
                 name: newName,
-                phone: newPhone,
+                number: newNumber,
                 id: persons.length++
             }
             setPersons(persons.concat(personObject))
             setNewName('')
-            setNewPhone('')
+            setNewNumber('')
         }
     }
 
@@ -35,7 +41,7 @@ const App = () => {
         setNewName(event.target.value)
     }
     const handlePersonPhoneChange = (event) => {
-        setNewPhone(event.target.value)
+        setNewNumber(event.target.value)
     }
 
     const handleFilter = (event) => {
@@ -52,7 +58,7 @@ const App = () => {
             <PersonForm
                 add={addPerson}
                 name={newName}
-                phone={newPhone}
+                phone={newNumber}
                 handleNameChange={handlePersonNameChange}
                 handlePhoneChange={handlePersonPhoneChange}/>
             <h2>Numbers</h2>
