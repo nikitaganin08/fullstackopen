@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Persons from "./components/Persons"
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
@@ -26,14 +26,17 @@ const App = () => {
         if (persons.filter(person => person.name === newName).length > 0) {
             alert(`${newName} is already added to phonebook`)
         } else {
-            const personObject = {
+            const newPerson = {
                 name: newName,
                 number: newNumber,
                 id: persons.length++
             }
-            setPersons(persons.concat(personObject))
-            setNewName('')
-            setNewNumber('')
+            axios.post('http://localhost:3001/persons', newPerson)
+                .then(response => {
+                    setPersons(persons.concat(response.data))
+                    setNewName('')
+                    setNewNumber('')
+                })
         }
     }
 
