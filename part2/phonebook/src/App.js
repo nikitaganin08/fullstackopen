@@ -27,7 +27,13 @@ const App = () => {
                 personService.update(existedPerson.id, changedPerson)
                     .then(savedPerson => {
                         setPersons(persons.map(person => person.id !== existedPerson.id ? person : savedPerson))
-                        addNotification(`Update number of ${savedPerson.name}`)
+                        addNotification({message: `Update number of ${savedPerson.name}`, type: 'notification'})
+                    })
+                    .catch(() => {
+                        addNotification({
+                            message: `Information of ${changedPerson.name} has already been removed from server`,
+                            type: 'error'
+                        })
                     })
             }
         } else {
@@ -38,15 +44,15 @@ const App = () => {
             personService.create(newPerson)
                 .then(savedPerson => {
                     setPersons(persons.concat(savedPerson))
-                    addNotification(`Added ${savedPerson.name}`)
+                    addNotification({message: `Added ${savedPerson.name}`, type: 'notification'})
                     setNewName('')
                     setNewNumber('')
                 })
         }
     }
 
-    const addNotification = (props) => {
-        setNotification(props)
+    const addNotification = (notification) => {
+        setNotification(notification)
         setTimeout(() => setNotification(null), 3000)
     }
 
@@ -78,7 +84,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <Notification message={notification}/>
+            <Notification notification={notification}/>
             <Filter value={filter} onChange={handleFilter}/>
             <h2>add a new </h2>
             <PersonForm
