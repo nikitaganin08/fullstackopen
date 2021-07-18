@@ -29,9 +29,9 @@ const App = () => {
                         setPersons(persons.map(person => person.id !== existedPerson.id ? person : savedPerson))
                         addNotification({message: `Update number of ${savedPerson.name}`, type: 'notification'})
                     })
-                    .catch(() => {
+                    .catch(error => {
                         addNotification({
-                            message: `Information of ${changedPerson.name} has already been removed from server`,
+                            message: `${error.response.data.error}`,
                             type: 'error'
                         })
                     })
@@ -47,6 +47,12 @@ const App = () => {
                     addNotification({message: `Added ${savedPerson.name}`, type: 'notification'})
                     setNewName('')
                     setNewNumber('')
+                })
+                .catch(error => {
+                    addNotification({
+                        message: `${error.response.data.error}`,
+                        type: 'error'
+                    })
                 })
         }
     }
